@@ -10,9 +10,11 @@ namespace efcore_console.DBContext
     {
         public DbSet<TestTable> TestTables { get; set; }
         public DbSet<TestTableDetail> TestTableDetails { get; set; }
+        public DbSet<TestCus> testCus { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseLazyLoadingProxies();
             optionsBuilder.UseSqlServer("Database=Test;Server=192.168.2.114,50000;User ID = sa; Password = Ihavenoidea@0;");
         }
 

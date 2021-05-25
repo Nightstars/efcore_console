@@ -68,5 +68,41 @@ namespace efcore_console.Service
             Console.WriteLine("delete successfully");
         }
         #endregion
+
+        #region InsertHL
+        public async void InsertHL(TestTable testTable)
+        {
+            if (_myDbContext.TestTables.Any(x => x.Id == testTable.Id))
+                return;
+            await _myDbContext.TestTables.AddAsync(testTable);
+            _myDbContext.SaveChanges();
+            Console.WriteLine("insertHL successfully!");
+        }
+        #endregion
+
+        #region GetByPk
+        public void GetByPk(int id)
+        {
+            var query = _myDbContext.TestTables.FirstOrDefault(x => x.Id == id);
+            if (query != null)
+            {
+                Console.WriteLine($"id: {query.Id}  name: {query.Id}");
+                Console.WriteLine();
+                var list = query.testTableDetails.ToList();
+                if (list.Any())
+                    list.ForEach(x => { Console.WriteLine($"id: {x.Id}   pid: {x.PID}    name: {x.Name}"); });
+            }
+                
+        }
+        #endregion
+
+        #region GetBySql
+        public void GetBySql(string sql)
+        {
+            var data = _myDbContext.testCus.FromSqlRaw(sql,8).ToList();
+            if (data.Any())
+                data.ForEach(x => Console.WriteLine($"pid: {x.name} name: {x.name}"));
+        }
+        #endregion
     }
 }
